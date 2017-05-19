@@ -66,7 +66,8 @@ class Login extends CI_Controller {
 													</div>');
 			redirect(base_url());
 		} else {
-			$data['chat'] = $this->chats->isi_chat()->result();
+			$data['status'] = $this->chats->get_stats()->result();
+			$data['chat']   = $this->chats->isi_chat()->result();
 			$this->load->view('header');
 			$this->load->view('chat', $data);
 			$this->load->view('footer');

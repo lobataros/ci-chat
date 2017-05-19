@@ -2,13 +2,24 @@
 	<div class="row">
 		<div class="col-md-6 col-md-offset-3">
 			<br><br><br>
-			<div class="account-wall">
 				<?= $this->session->flashdata('done'); ?>
 				<div class="panel panel-default">
+					<?php foreach($status as $s): ?>
 					<div class="panel-heading">
 						<strong><?= $this->session->userdata('nama'); ?></strong>
 						<a href="<?= base_url('auth/logout') ?>" class="btn btn-danger btn-xs pull-right">KELUAR</a>
+						<?php 
+							if ($this->session->userdata('user') == 'admin') {
+								if($s->status == TRUE) {
+									echo "<a href=".base_url('chat/maintenance')." class=\"btn btn-warning btn-xs\" title=\"Disable Chat\"><i class=\"glyphicon glyphicon-lock\"></i> Maintenance</a>";
+								} else {
+									echo "<a href=".base_url('chat/open')." class=\"btn btn-success btn-xs\" title=\"Enable Chat\"><i class=\"glyphicon glyphicon-ok\"></i> Buka Chat</a>";
+								}
+							}
+						?>
 					</div>
+					<?php endforeach ?>
+					<?php if ($s->status == TRUE): ?>
 					<div class="panel-body" style="height: 300px; overflow-y: scroll">
 					<?php foreach ($chat as $c){ ?>
 						<?php if($c->pengirim == $this->session->userdata('user')){ ?>
@@ -34,8 +45,15 @@
 						<?php } ?>
 					<?php } ?>
 					</div>
+					<?php endif ?>
+					<?php if ($s->status == FALSE): ?>
+					<div class="panel-body">
+						<h4 class="text-center" style="color: #FF0000">MOHON MAAF<br>SERVER SEDANG MAINTENANCE<br><br>SILAHKAN KEMBALI BEBERAPA SAAT</h4>
+					</div>
+					<?php endif ?>
 				</div>
-				<form method="post" action="kirim">
+				<?php if ($s->status == TRUE): ?>
+				<form method="post" action="chat/kirim">
 					<div class="col-md-12">
 						<div class="input-group">
 							<input type="text" name="pesan" class="form-control" placeholder="Masukan Teks">
@@ -45,7 +63,7 @@
 						</div>
 					</div>
 				</form>
-			</div>
+				<?php endif ?>
 		</div>
 	</div>
 </div>

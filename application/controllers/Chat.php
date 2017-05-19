@@ -20,10 +20,13 @@ class Chat extends CI_Controller {
 					'teks' => $this->input->post('pesan')
 				 );
 		 
-		
 		$this->db->insert('chat', $pesan);
 		redirect (base_url('chat'));
 	}
+
+	public function open() { return $this->chats->main(array('status'=>TRUE)); }
+
+	public function maintenance() { return $this->chats->main(array('status'=>FALSE)); }
 
 }
 
