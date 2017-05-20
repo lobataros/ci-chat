@@ -10,7 +10,8 @@ class Auth extends CI_Model {
 	public function cek_login(){
 		$where    = array(
 						'user' => $this->input->post('user'),
-						'pass' => $this->input->post('pass')
+						'pass' => $this->input->post('pass'),
+						'status' => TRUE
 					);
 		return $this->db->get_where('users',$where);
 	}

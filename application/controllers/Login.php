@@ -7,6 +7,7 @@ class Login extends CI_Controller {
 		parent::__construct();
 		$this->load->model('auth');
 		$this->load->model('chats');
+		$this->load->model('regis');
 	}
  
 	function index(){
@@ -36,12 +37,14 @@ class Login extends CI_Controller {
 				$id    = $row->id;
 				$nama  = $row->nama;
 				$user  = $row->user;
+				$akses = $row->akses;
 			}
 
 			$sesi = array(
 						'id'    => $id,
 						'nama'  => $nama,
 						'user'  => $user,
+						'akses' => $akses,
 						'sesi'  => TRUE
 					);
 			
@@ -77,6 +80,35 @@ class Login extends CI_Controller {
 	function logout(){
 		$this->session->sess_destroy();
 		redirect(base_url());
+	}
+
+	/*===============================================================
+								REGISTER
+	===============================================================*/
+	public function register() {
+		$this->load->view('header');
+		$this->load->view('regis');
+		$this->load->view('footer');
+	}
+
+	public function regis() {
+		return $this->regis->daftar();
+	}
+
+	public function aktif($user) {
+		$this->regis->aktif($user);
+		redirect(base_url('chat/pending'));
+	
+	}
+
+	public function nonaktif($user) {
+		$this->regis->nonaktif($user);
+		redirect(base_url('chat/pending'));
+	}
+
+	public function hapus($user) {
+		$this->regis->hapus($user);
+		redirect(base_url('chat/pending'));
 	}
 
 }
